@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+   <meta charset = "utf-8" />
+   <title>WebSocket Test DevFest Coimbra 2019</title>
+
+   <script language = "javascript" type = "text/javascript">
+      var wsUri = "ws://192.168.43.47/";
+      var output;
+		
+      function init() {
+         output = document.getElementById("output");
+         testWebSocket();
+		
+//Linha para executar a função testeWebSocket de 3 em 3 segundos		
+	//	 setInterval(function() {
+//				testWebSocket();		
+	//	}, 3000);
+	
+      }
+		
+      function testWebSocket() {
+         
+		 websocket = new WebSocket(wsUri);
+			
+         websocket.onopen = function(evt) {
+            onOpen(evt)
+         };
+		
+         websocket.onmessage = function(evt) {
+            onMessage(evt)
+         };
+		
+         websocket.onerror = function(evt) {
+            onError(evt)
+         };
+      }
+	  
+	  function testWebSocket2() {
+         
+		 websocket = new WebSocket(wsUri);
+			
+         websocket.onopen = function(evt) {
+            getTemp(evt)
+         };			
+		
+         websocket.onmessage = function(evt) {
+            onMessage(evt)
+         };
+		
+         websocket.onerror = function(evt) {
+            onError(evt)
+         };
+      }
+	  
+	   function testWebSocket3() {
+         
+		 websocket = new WebSocket(wsUri);
+			
+         websocket.onopen = function(evt) {
+            getHumidade(evt)
+         };			
+		
+         websocket.onmessage = function(evt) {
+            onMessage(evt)
+         };
+		
+         websocket.onerror = function(evt) {
+            onError(evt)
+         };
+      }
+
+      function getTemp(evt) {
+         writeToScreen("Devolve Temperatura");
+         doSend("Temperatura");
+      }
+	  
+	  function getHumidade(evt) {
+         writeToScreen("Devolve Humidade");
+         doSend("Humidade");
+      }
+		
+      function onOpen(evt) {
+         writeToScreen("WebSocket CONECTADO");
+         doSend("WebSocket rocks");
+		 doSend("DevFest is Nice? Yeahhhh...");
+      }
+		
+      function onMessage(evt) {
+         writeToScreen('<span style = "color: blue;">RECEBIDO do ESP: ' +
+            evt.data+'</span>'); websocket.close();
+      }
+
+      function onError(evt) {
+         writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+      }
+		
+      function doSend(message) {
+         writeToScreen("ENVIADO para o ESP: " + message); websocket.send(message);
+      }
+		
+      function writeToScreen(message) {
+         var pre = document.createElement("p"); 
+         pre.style.wordWrap = "break-word"; 
+         pre.innerHTML = message; output.appendChild(pre);
+      }
+		
+      window.addEventListener("load", init, false);
+		
+   </script>
+	
+   <h2>WebSocket Test DesvFest Coimbra 2019</h2>
+   <div id = "output"></div> 
+   <button type="button" onclick="testWebSocket2()">DevFest Temperatura</button>
+   <button type="button" onclick="testWebSocket3()">DevFest Humidade</button>
+	
+</html>
